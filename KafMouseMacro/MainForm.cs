@@ -142,10 +142,12 @@ public partial class MainForm : Form
         _isRunning = true;
         UpdateUIState();
 
+        bool rightClick = cmbClickType.SelectedIndex == 1;
+
         try
         {
             await Task.Run(() =>
-                _engine.StartAsync(_points.AsReadOnly(), (int)nudDelay.Value, _cts.Token));
+                _engine.StartAsync(_points.AsReadOnly(), (int)nudDelay.Value, rightClick, _cts.Token));
         }
         catch (OperationCanceledException)
         {
@@ -174,6 +176,7 @@ public partial class MainForm : Form
         btnSave.Enabled = !_isRunning;
         btnLoad.Enabled = !_isRunning;
         nudDelay.Enabled = !_isRunning;
+        cmbClickType.Enabled = !_isRunning;
 
         lblStatus.Text = _isRunning
             ? "Macro in esecuzione..."
